@@ -1,18 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
-using TrilhaApiDesafio.Context;
-using TrilhaApiDesafio.Models;
+using desafio_dotnet_agendamento_tarefas.Context;
+using desafio_dotnet_agendamento_tarefas.Models;
 
-namespace TrilhaApiDesafio.Controllers
+namespace desafio_dotnet_agendamento_tarefas.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class TarefaController : ControllerBase
+    public class TarefaController : Controller
     {
         private readonly OrganizadorContext _context;
 
         public TarefaController(OrganizadorContext context)
         {
             _context = context;
+        }
+
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var tarefas = _context.Tarefas.ToList();
+            return View(tarefas);
+        }
+
+        public IActionResult Criar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Criar(Tarefa tarefa)
+        {
+            if (tarefa.Data == DateTime.MinValue)
+                return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
+
+            if (ModelState.IsValid)
+            {
+                _context.Tarefas.Add(tarefa);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(tarefa);
         }
 
         [HttpGet("{id}")]
@@ -53,16 +80,6 @@ namespace TrilhaApiDesafio.Controllers
             // Dica: Usar como exemplo o endpoint ObterPorData
             var tarefa = _context.Tarefas.Where(x => x.Status == status);
             return Ok(tarefa);
-        }
-
-        [HttpPost]
-        public IActionResult Criar(Tarefa tarefa)
-        {
-            if (tarefa.Data == DateTime.MinValue)
-                return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
-
-            // TODO: Adicionar a tarefa recebida no EF e salvar as mudanças (save changes)
-            return CreatedAtAction(nameof(ObterPorId), new { id = tarefa.Id }, tarefa);
         }
 
         [HttpPut("{id}")]

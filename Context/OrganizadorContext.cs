@@ -1,14 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using TrilhaApiDesafio.Models;
+using desafio_dotnet_agendamento_tarefas.Models;
 
-namespace TrilhaApiDesafio.Context
+namespace desafio_dotnet_agendamento_tarefas.Context
 {
     public class OrganizadorContext : DbContext
     {
-        public OrganizadorContext(DbContextOptions<OrganizadorContext> options) : base(options)
-        {
-            
-        }
+        public OrganizadorContext(DbContextOptions<OrganizadorContext> options) : base(options){}
 
         public DbSet<Tarefa> Tarefas { get; set; }
     }

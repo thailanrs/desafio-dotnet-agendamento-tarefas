@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TrilhaApiDesafio.Models
+namespace desafio_dotnet_agendamento_tarefas.Models
 {
     public class Tarefa
     {
